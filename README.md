@@ -22,6 +22,10 @@ A simple, straightforward bot that downloads YouTube videos ( as video or audio 
 
 <h1><b>Deploying</b></h1>
 
-# Railway
+* Railway
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/eeVCpt?referralCode=6B3Q1r)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/bA1yuY?referralCode=6B3Q1r)
+
+* Heroku
+
+[![Deploy on Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/greplix/tgytdl)

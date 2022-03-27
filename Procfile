@@ -1,0 +1,1 @@
+worker: chmod +x * && bash start.sh

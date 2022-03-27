@@ -1,0 +1,24 @@
+{
+    "name": "YouTube Downloader Bot",
+    "description": "A simple and straightforward telegram bot designed to download videos from YouTube",
+    "repository": "https://github.com/greplix/tgytdl",
+    "env": {
+        "API_ID": {
+            "description": "Get it from my.telegram.org",
+            "required": true
+        },
+        "API_HASH": {
+            "description": "Get it from my.telegram.org",
+            "required": true
+        },
+        "BOT_TOKEN": {
+            "description": "Get it from @BotFather",
+            "required": true
+        },
+        "LOG_GRP_ID": {
+            "description": "Create a group, add @MissRose_Bot and send /id to get chat id",
+            "required": false
+        }
+    },
+    "stack": "container"
+}
