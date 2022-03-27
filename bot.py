@@ -9,7 +9,8 @@ logging.basicConfig(level=logging.INFO)
 bot_token = str(os.environ.get('BOT_TOKEN'))
 api_id = int(os.environ.get('API_ID'))
 api_hash = str(os.environ.get('API_HASH'))
-log_group = int(os.environ.get('LOG_GRP_ID'))
+try:log_group = int(os.environ.get('LOG_GRP_ID'))
+except:log_group = 0
 
 streams_dict = {}
 
