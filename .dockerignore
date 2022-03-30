@@ -1,4 +1,7 @@
-/videos
+videos/*.mp4
+videos/*.webm
+videos/*.mp3
 __pycache__/
+core/__pycache__/
 *.session
 *.session-journal
