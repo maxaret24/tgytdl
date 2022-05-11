@@ -1,4 +1,4 @@
-pyrogram
+pyrogram==1.4.1
 psutil
 TGCrypto==1.2.3
 pytube==12.1.0
