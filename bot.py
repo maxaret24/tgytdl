@@ -1,6 +1,6 @@
 from pyrogram.types import Message,InlineKeyboardButton,InlineKeyboardMarkup,CallbackQuery
 from pyrogram import Client, filters,idle
-from pytube import YouTube
+import re
 import logging,datetime
 from vars import *
 from core.functions import *
@@ -10,6 +10,8 @@ bot_token = BOT_TOKEN
 api_id = API_ID
 api_hash = API_HASH
 log_group = LOG_GRP_ID
+
+REGEX = re.compile(r'https?://(\S+\.)?\S+\.?be(\.\S+)?/(w\S+|s\S+/)?-?(\?v=)?\w+')
 
 ytbot = Client(
     "bot",
@@ -45,27 +47,18 @@ async def hel(_: Client, m: Message):
 )
 async def ytv(client: Client, m: Message):
     if m.reply_to_message:
-        link = m.reply_to_message.text.strip()
-        try:
-            assert link.startswith('https://') or link.startswith('http://')
-        except AssertionError:
-            await m.reply_text(f'Reply to a message or provide link')
-            return
+        reg = REGEX.search(m.reply_to_message.text.strip())
+        if not reg:
+            return await m.reply_text('Didn\'t find a video URL from the message')
+        link = reg.group()
     else:
-        splitted = m.text.split(" ")
-        if len(splitted) != 2:
-            await m.reply_text(text='Reply to a message with URL or provide a link')
-            return
-        else:
-            link = splitted[1].strip()
-            try:
-                assert link.startswith('https://') or link.startswith('http://')
-            except AssertionError:
-                await m.reply_text(f'Error in parsing URL');return
-            except Exception as e:
-                await m.reply_text(f'**Exception**: `{e}`',parse_mode='markdown');return
+        if len(m.command) != 2:
+            return await m.reply_text(text='Reply to a message with URL or provide a link')
+        link = m.command[1].strip()
+        if not REGEX.search(link):
+            return await m.reply_text('Invalid video URL')
     try:
-        s=await m.reply_text('**Fetching information...**',parse_mode='md')
+        s = await m.reply_text('**Fetching information...**',parse_mode='md')
         ytobj,streams = get_streams(link,'video')
     except Exception as e:
         await s.edit_text(f'**Exception**: `{e}`',parse_mode='markdown');return
@@ -91,27 +84,18 @@ async def respond_vid(client,callback: CallbackQuery):
 )
 async def yta(client: Client, m: Message):
     if m.reply_to_message:
-        link = m.reply_to_message.text.strip()
-        try:
-            assert link.startswith('https://') or link.startswith('http://')
-        except AssertionError:
-            await m.reply_text(f'Reply to a message or provide link')
-            return
+        reg = REGEX.search(m.reply_to_message.text.strip())
+        if not reg:
+            return await m.reply_text('Didn\'t find a video URL from the message')
+        link = reg.group()
     else:
-        splitted = m.text.split(" ")
-        if len(splitted) != 2:
-            await m.reply_text(text='Reply to a message with URL or provide a link')
-            return
-        else:
-            link = splitted[1].strip()
-            try:
-                assert link.startswith('https://') or link.startswith('http://')
-            except AssertionError:
-                await m.reply_text(f'Error in parsing URL');return
-            except Exception as e:
-                await m.reply_text(f'**Exception**: `{e}`',parse_mode='markdown');return
+        if len(m.command) != 2:
+            return await m.reply_text(text='Reply to a message with URL or provide a link')
+        link = m.command[1].strip()
+        if not REGEX.search(link):
+            return await m.reply_text('Invalid video URL')
     try:
-        s=await m.reply_text('**Fetching information...**',parse_mode='md')
+        s = await m.reply_text('**Fetching information...**',parse_mode='md')
         ytobj,streams = get_streams(link,'audio')
     except Exception as e:
         await s.edit_text(f'**Exception**: `{e}`',parse_mode='markdown');return

@@ -4,9 +4,6 @@ from pyrogram.types import CallbackQuery
 import logging,secrets
 from pyrogram.types import InlineKeyboardButton,InlineKeyboardMarkup
 from pytube import YouTube
-from asyncio import create_subprocess_shell
-from asyncio.subprocess import PIPE
-
 
 
 def rmfile(filename):
@@ -21,6 +18,8 @@ def get_streams(link,type):
     else:
         streams = p.streams.filter(type='audio',mime_type='audio/webm')
     return p,streams
+
+
 
 async def dvid(client: Client,link,itag,callback: CallbackQuery):
     a = await callback.edit_message_text(text=f'**Downloading...**',parse_mode='markdown')
@@ -44,8 +43,7 @@ async def dvid(client: Client,link,itag,callback: CallbackQuery):
             file_name=vid.title
             )
         else:
-            await callback.edit_message_text(text=f'**Processing...**',parse_mode='markdown')
-            await vid_to_aud(f"videos/{filename}",f"videos/{n}.mp3")
+            os.rename(f"videos/{filename}",f"videos/{n}.mp3")
             await callback.edit_message_text(text=f'**Uploading...**',parse_mode='markdown')
             await client.send_audio(
                 chat_id=a.chat.id,
@@ -60,18 +58,22 @@ async def dvid(client: Client,link,itag,callback: CallbackQuery):
     logging.info('VIDEO LOCALLY REMOVED')
     await a.delete()
 
+
+
 def sys_info():
     t1,t2,t3 = psutil.getloadavg()
     cc = os.cpu_count()
     cu = psutil.cpu_percent()
     r = psutil.virtual_memory()[2]
     msg = f'''
-**Task Avg**: `{t1} {t2} {t3}`
+**Load Avg**: `{t1} {t2} {t3}`
 **CPU Usage**: `{cu}%`
 **CPUs**: `{cc}`
 **RAM Usage**: `{r}%`
     '''
     return msg
+
+
 
 async def progress(current,total,c: Client,mid,cid):
     t=round((current*100/total),1)
@@ -88,6 +90,8 @@ async def progress(current,total,c: Client,mid,cid):
         except:pass
     else:pass
 
+
+
 def genkeyboard(streams,link,typ):
     kb=[]
     streams = list(streams)
@@ -101,17 +105,16 @@ def genkeyboard(streams,link,typ):
         kb.append(lel)
     return InlineKeyboardMarkup(kb)
 
-async def vid_to_aud(src,dest):
-    shell = await create_subprocess_shell(
-        f'ffmpeg -i "{src}" -vn -y "{dest}"',
-        stdout=PIPE,stderr=PIPE)
-    await shell.communicate()
+
+
 
 WELCOME = '''
 Hi there, you can use me to download videos and audios from YouTube just by providing its link!
 
 **Use /help for commands**
 '''
+
+
 HELP = '''
 **Usage**
 
