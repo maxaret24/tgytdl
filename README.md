@@ -46,8 +46,6 @@ docker run tgytdl
 
 >Without Docker
 
-- You need to have `ffmpeg` installed
-
 ```
 git clone https://github.com/greplix/tgytdl.git
 cd tgytdl
